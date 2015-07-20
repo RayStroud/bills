@@ -4,7 +4,7 @@
 		$result = $db->query('SELECT * FROM groceries');
 		while($row = $result->fetch_assoc())
 		{
-			$bill = null;
+			$bill = new stdClass();
 			$bill->date = $row['date'];
 			$bill->location = $row['location'];
 			$bill->amount = $row['amount'];
@@ -25,13 +25,13 @@
 			FROM groceries
 			GROUP BY YEARWEEK(date, 3)";
 		$result = $db->query($sql);
+		$weeks = [];
 		while($row = $result->fetch_assoc())
 		{
-			$week = null;
+			$week = new stdClass();
 			$week->weekStart = $row['weekStart'];
 			$week->count = $row['count'];
 			$week->amount = $row['amount'];
-			$week->id = $row['id'];
 
 			$weeks[] = $week;
 		}
@@ -63,11 +63,11 @@
 
 	try
 	{
-		mysqli_report(MYSQLI_REPORT_STRICT);
+		//mysqli_report(MYSQLI_REPORT_STRICT);
 		$host = 'localhost';
 		$dbname = 'bills';
 		$user = 'root';
-		$password = 'root';
+		$password = '';
 		$db = new mysqli($host, $user, $password, $dbname);
 
 		switch($_SERVER['REQUEST_METHOD'])
