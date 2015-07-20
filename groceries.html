@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html ng-app="bills">
+<head>
+	<title>Bills</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+	<script src="../shifttips/js/vendor/moment.min.js"></script>
+	<script src="js/app.js"></script>
+	<style type="text/css">
+		body {font-family: monospace;}
+		table {margin: 0 1%;}
+		td {padding: 0 0.5em; text-align: right;}
+		th {background-color: grey; color: white;}
+		tr.alt {background-color: whitesmoke;}
+		tr.summary {background-color: lightgray;}
+		.Nesters {color: green;}
+		.Save-On {color: limegreen;}
+		.Costco {color: mediumblue;}
+		.Urban {color: purple;}
+		.wrap {display: flex; flex-flow: row wrap;}
+		table input[type="number"] {width: 60px;}
+	</style>
+</head>
+<body ng-controller="GroceriesController as ctrl">
+	<h1>Grocery Bills</h1>
+	<div class="wrap">
+		<table>
+			<tr>
+				<th>Date</th>
+				<th>Store</th>
+				<th>Amount</th>
+			</tr>
+			<tr ng-repeat="bill in ctrl.bills" ng-class-even="'alt'">
+				<td>{{bill.date | date:'yyyy-MMM-dd EEE'}}</td>
+				<td class="{{bill.location}}">{{bill.location}}</td>
+				<td>{{bill.amount | currency}}</td>
+			</tr>
+			<tr>
+				<td>{{ctrl.newBill.date | date:'yyyy-MMM-dd EEE'}}</td>
+				<td class="{{ctrl.newBill.location}}">{{ctrl.newBill.location}}</td>
+				<td>{{ctrl.newBill.amount | currency}}</td>
+			</tr>
+			<tr>
+				<td><input type="date" ng-model="ctrl.newBill.date" placeholder="YYYY-MM-DD"/></td>
+				<td>
+					<select ng-model="ctrl.newBill.location">
+						<option value="Save-On">Save-On</option>
+						<option value="Nesters">Nesters</option>
+						<option value="Urban">Urban</option>
+						<option value="Costco">Costco</option>
+					</select>
+				</td>
+				<td>$<input type="number" ng-model="ctrl.newBill.amount" placeholder=""/></td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<button ng-click="ctrl.newBill = null;">Clear</button>
+					<button ng-click="ctrl.addBill(newBill);"type="submit">Add Bill</button>
+				</td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<th>Week</th>
+				<th>Bills</th>
+				<th>Total</th>
+			</tr>
+			<tr ng-repeat="week in ctrl.weeks" ng-class-even="'alt'">
+				<td>{{week.weekStart | date:'yyyy-MMM-dd'}}</td>
+				<td>{{week.count}}</td>
+				<td>{{week.amount | currency}}</td>
+			</tr>
+			<tr class="summary">
+				<td>{{ctrl.weeksSummary.totalWeeks}} weeks</td>
+				<td>{{ctrl.weeksSummary.totalBills}}</td>
+				<td>{{ctrl.weeksSummary.totalAmount | currency}}</td>
+			</tr>
+			<tr class="summary">
+				<td>average</td>
+				<td>{{ctrl.weeksSummary.averageBills | number:2}}</td>
+				<td>{{ctrl.weeksSummary.averageAmount | currency}}</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
