@@ -19,13 +19,13 @@
 	{
 		$sql = 
 			"SELECT
-				YEARWEEK(date, 3) as week,
-				STR_TO_DATE(CONCAT(YEARWEEK(date,3), ' Monday'), '%x%v %W') as weekStart,
+				YEARWEEK(date, 3) as yearweek,
+				STR_TO_DATE(CONCAT(YEARWEEK(date, 3), ' Monday'), '%x%v %W') as weekStart,
 				COUNT(id) as count,
 				SUM(amount) as amount
 			FROM groceries
-			GROUP BY week
-			ORDER BY week";
+			GROUP BY yearweek
+			ORDER BY yearweek";
 		$result = $db->query($sql);
 		$weeks = [];
 		while($row = $result->fetch_assoc())
@@ -39,6 +39,32 @@
 		}
 		$result->free();
 		echo json_encode($weeks);
+	}
+	function selectMonths($db)
+	{
+		$sql = 
+			"SELECT
+				YEAR(date) as year,
+				MONTH(date) as month,
+				STR_TO_DATE(CONCAT(YEAR(date), ' ', MONTHNAME(date), ' 1'), '%Y %M %e') as monthStart,
+				COUNT(id) as count,
+				SUM(amount) as amount
+			FROM groceries
+			GROUP BY year, month
+			ORDER BY year, month";
+		$result = $db->query($sql);
+		$months = [];
+		while($row = $result->fetch_assoc())
+		{
+			$month = new stdClass();
+			$month->month = $row['monthStart'];
+			$month->count = $row['count'];
+			$month->amount = $row['amount'];
+
+			$months[] = $month;
+		}
+		$result->free();
+		echo json_encode($months);
 	}
 	function insert($db, $bill)
 	{
@@ -75,9 +101,13 @@
 		switch($_SERVER['REQUEST_METHOD'])
 		{
 			case 'GET':
-				if(isset($_GET['weeks']))
+				if(isset($_GET['weeks']) || isset($_GET['week']))
 				{
 					selectWeeks($db);
+				}
+				else if(isset($_GET['months']) || isset($_GET['month']))
+				{
+					selectMonths($db);
 				}
 				else
 				{

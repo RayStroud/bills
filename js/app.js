@@ -8,17 +8,17 @@
 			//load bills
 			$http.get('groceries.php')
 			.success(function (data, status, headers, config) {
-				ctrl.response = 'SUCCESS - DATA: ' + data + '|STATUS: ' + status + '|HEADERS: ' + headers + '|CONFIG: ' + config;
+				ctrl.response = {message: 'success', data: data, status: status, headers: headers, config: config};
 				ctrl.bills = data;		
 			})
 			.error(function (data, status, headers, config) {
-				ctrl.response = 'ERROR - DATA: ' + data + '|STATUS: ' + status + '|HEADERS: ' + headers + '|CONFIG: ' + config;
+				ctrl.response = {message: 'error', data: data, status: status, headers: headers, config: config};
 			});
 
 			//load weeks, calculate weeks summaries
 			$http.get('groceries.php?weeks')
 			.success(function (data, status, headers, config) {
-				ctrl.response = 'SUCCESS - DATA: ' + data + '|STATUS: ' + status + '|HEADERS: ' + headers + '|CONFIG: ' + config;
+				ctrl.response = {message: 'success', data: data, status: status, headers: headers, config: config};
 				ctrl.weeks = data;
 				ctrl.weeksSummary = {};
 
@@ -35,7 +35,30 @@
 				ctrl.weeksSummary.averageAmount = amount / nWeeks;
 			})
 			.error(function (data, status, headers, config) {
-				ctrl.response = 'ERROR - DATA: ' + data + '|STATUS: ' + status + '|HEADERS: ' + headers + '|CONFIG: ' + config;
+				ctrl.response = {message: 'error', data: data, status: status, headers: headers, config: config};
+			});
+
+			//load months, calculate months summaries
+			$http.get('groceries.php?months')
+			.success(function (data, status, headers, config) {
+				ctrl.response = {message: 'success', data: data, status: status, headers: headers, config: config};
+				ctrl.months = data;
+				ctrl.monthsSummary = {};
+
+				var nMonths = 0, nBills = 0, amount = 0;
+				for (var key in ctrl.months) {
+					nMonths++;
+					nBills += +ctrl.months[key].count;
+					amount += +ctrl.months[key].amount;
+				}
+				ctrl.monthsSummary.totalMonths = nMonths;
+				ctrl.monthsSummary.totalBills = nBills;
+				ctrl.monthsSummary.totalAmount = amount;
+				ctrl.monthsSummary.averageBills = nBills / nMonths;
+				ctrl.monthsSummary.averageAmount = amount / nMonths;
+			})
+			.error(function (data, status, headers, config) {
+				ctrl.response = {message: 'error', data: data, status: status, headers: headers, config: config};
 			});
 		};
 

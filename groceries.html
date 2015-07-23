@@ -81,6 +81,28 @@
 				<td>{{ctrl.weeksSummary.averageAmount | currency}}</td>
 			</tr>
 		</table>
+		<table>
+			<tr>
+				<th>Month</th>
+				<th>Bills</th>
+				<th>Total</th>
+			</tr>
+			<tr ng-repeat="month in ctrl.months" ng-class-even="'alt'">
+				<td>{{month.month | date:'MMM yyyy'}}</td>
+				<td>{{month.count}}</td>
+				<td>{{month.amount | currency}}</td>
+			</tr>
+			<tr class="summary">
+				<td>{{ctrl.monthsSummary.totalMonths}} months</td>
+				<td>{{ctrl.monthsSummary.totalBills}}</td>
+				<td>{{ctrl.monthsSummary.totalAmount | currency}}</td>
+			</tr>
+			<tr class="summary">
+				<td>average</td>
+				<td>{{ctrl.monthsSummary.averageBills | number:2}}</td>
+				<td>{{ctrl.monthsSummary.averageAmount | currency}}</td>
+			</tr>
+		</table>
 	</div>
 </body>
 </html>
