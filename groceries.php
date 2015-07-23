@@ -1,7 +1,7 @@
 <?php
 	function selectBills($db)
 	{
-		$result = $db->query('SELECT * FROM groceries');
+		$result = $db->query('SELECT * FROM groceries ORDER BY date');
 		while($row = $result->fetch_assoc())
 		{
 			$bill = new stdClass();
@@ -18,12 +18,14 @@
 	function selectWeeks($db)
 	{
 		$sql = 
-			"SELECT 
+			"SELECT
+				YEARWEEK(date, 3) as week,
 				STR_TO_DATE(CONCAT(YEARWEEK(date,3), ' Monday'), '%x%v %W') as weekStart,
 				COUNT(id) as count,
 				SUM(amount) as amount
 			FROM groceries
-			GROUP BY YEARWEEK(date, 3)";
+			GROUP BY week
+			ORDER BY week";
 		$result = $db->query($sql);
 		$weeks = [];
 		while($row = $result->fetch_assoc())
@@ -67,7 +69,7 @@
 		$host = 'localhost';
 		$dbname = 'bills';
 		$user = 'root';
-		$password = '';
+		$password = 'root';
 		$db = new mysqli($host, $user, $password, $dbname);
 
 		switch($_SERVER['REQUEST_METHOD'])
