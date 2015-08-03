@@ -19,6 +19,7 @@
 		.Urban {color: purple;}
 		.wrap {display: flex; flex-flow: row wrap;}
 		table input[type="number"] {width: 60px;}
+		button {appearance: none; -webkit-appearance: none; padding: 0.8em 1em; background-color: lightgray; border: 1px solid gray; border-radius: 5px; font-family: inherit;}
 	</style>
 </head>
 <body ng-controller="GroceriesController as ctrl">
@@ -31,12 +32,12 @@
 				<th>Amount</th>
 			</tr>
 			<tr ng-repeat="bill in ctrl.bills" ng-class-even="'alt'">
-				<td>{{bill.date | date:'yyyy-MMM-dd EEE'}}</td>
+				<td>{{bill.date | date:'EEE MMM/dd/yy'}}</td>
 				<td class="{{bill.location}}">{{bill.location}}</td>
 				<td>{{bill.amount | currency}}</td>
 			</tr>
 			<tr>
-				<td>{{ctrl.newBill.date | date:'yyyy-MMM-dd EEE'}}</td>
+				<td>{{ctrl.newBill.date | date:'EEE MMM/dd/yy'}}</td>
 				<td class="{{ctrl.newBill.location}}">{{ctrl.newBill.location}}</td>
 				<td>{{ctrl.newBill.amount | currency}}</td>
 			</tr>
@@ -50,7 +51,7 @@
 						<option value="Costco">Costco</option>
 					</select>
 				</td>
-				<td>$<input type="number" ng-model="ctrl.newBill.amount" placeholder=""/></td>
+				<td><input type="number" ng-model="ctrl.newBill.amount" placeholder="$"/></td>
 			</tr>
 			<tr>
 				<td colspan="3">
