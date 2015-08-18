@@ -3,22 +3,24 @@
 
 	app.controller('GroceriesController', ['$http', function($http) {
 		var ctrl = this;
+		ctrl.sortField = ['date', 'weekStart', 'month'];
+		ctrl.sortReverse = [false, false, false];
 
-		this.loadBills = function() {
+		ctrl.loadBills = function() {
 			//load bills
 			$http.get('groceries.php')
 			.success(function (data, status, headers, config) {
-				ctrl.response = {message: 'success', data: data, status: status, headers: headers, config: config};
+				ctrl.responseBills = {message: 'success', data: data, status: status, headers: headers, config: config};
 				ctrl.bills = data;		
 			})
 			.error(function (data, status, headers, config) {
-				ctrl.response = {message: 'error', data: data, status: status, headers: headers, config: config};
+				ctrl.responseBills = {message: 'error', data: data, status: status, headers: headers, config: config};
 			});
 
 			//load weeks, calculate weeks summaries
 			$http.get('groceries.php?weeks')
 			.success(function (data, status, headers, config) {
-				ctrl.response = {message: 'success', data: data, status: status, headers: headers, config: config};
+				ctrl.responseWeeks = {message: 'success', data: data, status: status, headers: headers, config: config};
 				ctrl.weeks = data;
 				ctrl.weeksSummary = {};
 
@@ -35,13 +37,13 @@
 				ctrl.weeksSummary.averageAmount = amount / nWeeks;
 			})
 			.error(function (data, status, headers, config) {
-				ctrl.response = {message: 'error', data: data, status: status, headers: headers, config: config};
+				ctrl.responseWeeks = {message: 'error', data: data, status: status, headers: headers, config: config};
 			});
 
 			//load months, calculate months summaries
 			$http.get('groceries.php?months')
 			.success(function (data, status, headers, config) {
-				ctrl.response = {message: 'success', data: data, status: status, headers: headers, config: config};
+				ctrl.responseMonths = {message: 'success', data: data, status: status, headers: headers, config: config};
 				ctrl.months = data;
 				ctrl.monthsSummary = {};
 
@@ -58,11 +60,11 @@
 				ctrl.monthsSummary.averageAmount = amount / nMonths;
 			})
 			.error(function (data, status, headers, config) {
-				ctrl.response = {message: 'error', data: data, status: status, headers: headers, config: config};
+				ctrl.responseMonths = {message: 'error', data: data, status: status, headers: headers, config: config};
 			});
 		};
 
-		this.addBill = function(newBill) {
+		ctrl.addBill = function(newBill) {
 			var billToAdd = JSON.parse(JSON.stringify(ctrl.newBill));
 			billToAdd.date = billToAdd.date ? moment(billToAdd.date).format('YYYY-MM-DD') : null;
 			$http({
@@ -72,13 +74,26 @@
 				header: {'Content-Type': 'application/c-www-form-urlencoded'}
 			})
 			.success(function (data, status, headers, config) {
-				ctrl.response = 'SUCCESS - DATA: ' + data + '|STATUS: ' + status + '|HEADERS: ' + headers + '|CONFIG: ' + config;
+				ctrl.responseAdd = 'SUCCESS - DATA: ' + data + '|STATUS: ' + status + '|HEADERS: ' + headers + '|CONFIG: ' + config;
 				ctrl.newBill = null;
 				ctrl.loadBills();
 			})
 			.error(function (data, status, headers, config) {
-				ctrl.response = 'ERROR - DATA: ' + data + '|STATUS: ' + status + '|HEADERS: ' + headers + '|CONFIG: ' + config;
+				ctrl.responseAdd = 'ERROR - DATA: ' + data + '|STATUS: ' + status + '|HEADERS: ' + headers + '|CONFIG: ' + config;
 			});
+		};
+
+		ctrl.changeSortField = function(tableNumber, field) {
+			// if field is already selected, toggle the sort direction
+			if(ctrl.sortField[tableNumber] == field) {
+				ctrl.sortReverse[tableNumber] = !ctrl.sortReverse[tableNumber];
+			} else {
+				ctrl.sortField[tableNumber] = field;
+				ctrl.sortReverse[tableNumber] = false;
+			}
+		};
+		ctrl.isSortField = function(tableNumber, field) {
+			return ctrl.sortField[tableNumber] == field;
 		};
 
 		ctrl.loadBills();

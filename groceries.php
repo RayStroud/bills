@@ -7,8 +7,8 @@
 			$bill = new stdClass();
 			$bill->date = $row['date'];
 			$bill->location = $row['location'];
-			$bill->amount = $row['amount'];
-			$bill->id = $row['id'];
+			$bill->amount = (float)$row['amount'];
+			$bill->id = (int)$row['id'];
 
 			$groceries[] = $bill;
 		}
@@ -32,8 +32,8 @@
 		{
 			$week = new stdClass();
 			$week->weekStart = $row['weekStart'];
-			$week->count = $row['count'];
-			$week->amount = $row['amount'];
+			$week->count = (int)$row['count'];
+			$week->amount = (float)$row['amount'];
 
 			$weeks[] = $week;
 		}
@@ -58,8 +58,8 @@
 		{
 			$month = new stdClass();
 			$month->month = $row['monthStart'];
-			$month->count = $row['count'];
-			$month->amount = $row['amount'];
+			$month->count = (int)$row['count'];
+			$month->amount = (float)$row['amount'];
 
 			$months[] = $month;
 		}

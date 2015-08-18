@@ -8,8 +8,9 @@
 	<script src="js/app.js"></script>
 	<style type="text/css">
 		body {font-family: monospace;}
-		table {margin: 0 1%;}
-		td {padding: 0 0.5em; text-align: right;}
+		body * {box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;}
+		table {margin: 1em 1%; border-collapse: collapse;}
+		td {padding: 0.1em 0.5em; text-align: right;}
 		th {background-color: grey; color: white;}
 		tr.alt {background-color: whitesmoke;}
 		tr.summary {background-color: lightgray;}
@@ -21,7 +22,10 @@
 		.Keg {color: blueviolet;}
 		.wrap {display: flex; flex-flow: row wrap;}
 		table input[type="number"] {width: 60px;}
+		input, select {padding: 0.5em; height: 2.5em; width: 100%; margin: 0.8em 0;}
 		button {appearance: none; -webkit-appearance: none; padding: 0.8em 1em; background-color: lightgray; border: 1px solid gray; border-radius: 5px; font-family: inherit;}
+		th.sort-field {padding: 0.5em 0; box-shadow: inset 0 -0.3em 0 0 black;}
+		th.sort-field.reverse {padding: 0.5em 0; box-shadow: inset 0 0.3em 0 0 black;}
 	</style>
 </head>
 <body ng-controller="GroceriesController as ctrl">
@@ -29,12 +33,12 @@
 	<div class="wrap">
 		<table>
 			<tr>
-				<th>Date</th>
-				<th>Store</th>
-				<th>Amount</th>
+				<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'date')}" ng-click="ctrl.changeSortField(0, 'date')">Date</th>
+				<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'location')}" ng-click="ctrl.changeSortField(0, 'location')">Store</th>
+				<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'amount')}" ng-click="ctrl.changeSortField(0, 'amount')">Amount</th>
 			</tr>
-			<tr ng-repeat="bill in ctrl.bills" ng-class-even="'alt'">
-				<td>{{bill.date | date:'EEE MMM/dd/yy'}}</td>
+			<tr ng-repeat="bill in ctrl.bills | orderBy:ctrl.sortField[0]:ctrl.sortReverse[0]" ng-class-even="'alt'">
+				<td>{{bill.date | date:"EEE MMM/dd/yy"}}</td>
 				<td class="{{bill.location}}">{{bill.location}}</td>
 				<td>{{bill.amount | currency}}</td>
 			</tr>
@@ -52,6 +56,7 @@
 						<option value="Urban">Urban</option>
 						<option value="Costco">Costco</option>
 						<option value="Meats">Meats</option>
+						<option value="Keg">Keg</option>
 					</select>
 				</td>
 				<td><input type="number" ng-model="ctrl.newBill.amount" placeholder="$"/></td>
@@ -65,11 +70,11 @@
 		</table>
 		<table>
 			<tr>
-				<th>Week</th>
-				<th>Bills</th>
-				<th>Total</th>
+				<th ng-class="{reverse:ctrl.sortReverse[1], 'sort-field':ctrl.isSortField(1, 'weekStart')}" ng-click="ctrl.changeSortField(1, 'weekStart')">Week</th>
+				<th ng-class="{reverse:ctrl.sortReverse[1], 'sort-field':ctrl.isSortField(1, 'count')}" ng-click="ctrl.changeSortField(1, 'count')">Bills</th>
+				<th ng-class="{reverse:ctrl.sortReverse[1], 'sort-field':ctrl.isSortField(1, 'amount')}" ng-click="ctrl.changeSortField(1, 'amount')">Total</th>
 			</tr>
-			<tr ng-repeat="week in ctrl.weeks" ng-class-even="'alt'">
+			<tr ng-repeat="week in ctrl.weeks | orderBy:ctrl.sortField[1]:ctrl.sortReverse[1]" ng-class-even="'alt'">
 				<td>{{week.weekStart | date:'yyyy-MMM-dd'}}</td>
 				<td>{{week.count}}</td>
 				<td>{{week.amount | currency}}</td>
@@ -87,11 +92,11 @@
 		</table>
 		<table>
 			<tr>
-				<th>Month</th>
-				<th>Bills</th>
-				<th>Total</th>
+				<th ng-class="{reverse:ctrl.sortReverse[2], 'sort-field':ctrl.isSortField(2, 'month')}" ng-click="ctrl.changeSortField(2, 'month')">Month</th>
+				<th ng-class="{reverse:ctrl.sortReverse[2], 'sort-field':ctrl.isSortField(2, 'count')}" ng-click="ctrl.changeSortField(2, 'count')">Bills</th>
+				<th ng-class="{reverse:ctrl.sortReverse[2], 'sort-field':ctrl.isSortField(2, 'amount')}" ng-click="ctrl.changeSortField(2, 'amount')">Total</th>
 			</tr>
-			<tr ng-repeat="month in ctrl.months" ng-class-even="'alt'">
+			<tr ng-repeat="month in ctrl.months | orderBy:ctrl.sortField[2]:ctrl.sortReverse[2]" ng-class-even="'alt'">
 				<td>{{month.month | date:'MMM yyyy'}}</td>
 				<td>{{month.count}}</td>
 				<td>{{month.amount | currency}}</td>
