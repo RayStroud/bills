@@ -4,7 +4,7 @@
 	app.controller('GroceriesController', ['$http', function($http) {
 		var ctrl = this;
 		ctrl.sortField = ['date', 'weekStart', 'month'];
-		ctrl.sortReverse = [false, false, false];
+		ctrl.sortReverse = [true, true, true];
 
 		ctrl.loadBills = function() {
 			//load bills
