@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app="bills">
+<head>
+	<title>Bills</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<script src="assets/js/angular.min.js"></script>
+	<script src="assets/js/moment.min.js"></script>
+	<script src="assets/js/app.js"></script>
+	<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body ng-controller="BillsMonthlyController as ctrl">
+	<div id="nav">
+		<a href="groceries.html">Groceries</a>
+		<a href="bills.html">Bills</a>
+		<a href="bills-monthly.html" class="selected">Monthly</a>
+		<a href="bill-add.html">Add</a>
+	</div>
+	<h1>Monthly Bills</h1>
+	<div class="mobile-box">
+		<table>
+			<tr>
+				<th ng-class="{reverse:ctrl.sortReverse, 'sort-field':ctrl.isSortField(['year','month'])}" ng-click="ctrl.changeSortField(['year','month'])">Month</th>
+				<th ng-repeat="type in ctrl.types"
+					ng-class="{reverse:ctrl.sortReverse, 'sort-field':ctrl.isSortField('bills.' + type.type + '.amount')}" 
+					ng-click="ctrl.changeSortField('bills.' + type.type + '.amount')"
+				>
+					<span ng-class="{income: type.isIncome == 1}">{{type.type}}</span>
+				</th>
+				<th ng-class="{reverse:ctrl.sortReverse, 'sort-field':ctrl.isSortField('incomeTotal')}" ng-click="ctrl.changeSortField('incomeTotal')"><span class="income">Income</span></th>
+				<th ng-class="{reverse:ctrl.sortReverse, 'sort-field':ctrl.isSortField('billTotal')}" ng-click="ctrl.changeSortField('billTotal')">Bills</th>
+				<th ng-class="{reverse:ctrl.sortReverse, 'sort-field':ctrl.isSortField('total')}" ng-click="ctrl.changeSortField('total')">Total</th>
+			</tr>
+			<tr ng-repeat="month in ctrl.months | orderBy:ctrl.sortField:ctrl.sortReverse" ng-class-even="'alt'">
+				<td>{{month.monthname}} {{month.year}}</td>
+				<td ng-repeat="type in ctrl.types"><span ng-class="{income: type.isIncome == 1}"><div class="amount-count">{{month.bills[type.type].count > 1 ? '(' + month.bills[type.type].count + ')' : ''}}</div>{{month.bills[type.type].amount | currency}}</span></td>
+				<td><span class="income">{{month.incomeTotal | currency}}</span></td>
+				<td>{{month.billTotal | currency}}</td>
+				<td><span ng-class="{debt: month.total < 0}">{{month.total | currency}}</span></td>
+			</tr>
+			<tr class="summary">
+				<td>{{ctrl.monthsSummary.totalMonths}} months</td>
+				<td ng-repeat="type in ctrl.types"><span ng-class="{income: type.isIncome == 1}">{{type.type}}</span></td>
+				<td><span class="income">{{ctrl.monthsSummary.totalIncome | currency}}</span></td>
+				<td>{{ctrl.monthsSummary.totalBills | currency}}</td>
+				<td>{{ctrl.monthsSummary.totalAmount | currency}}</td>
+			</tr>
+			<tr class="summary">
+				<td>average</td>
+				<td ng-repeat="type in ctrl.types"><span ng-class="{income: type.isIncome == 1}">{{type.type}}</span></td>
+				<td><span class="income">{{ctrl.monthsSummary.averageIncome | currency}}</span></td>
+				<td>{{ctrl.monthsSummary.averageBills | currency}}</td>
+				<td>{{ctrl.monthsSummary.averageAmount | currency}}</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

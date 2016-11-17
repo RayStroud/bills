@@ -1,0 +1,204 @@
+/* ############################################
+#	VARS
+############################################ */
+	//padding
+	$pd: 0.3em;
+	$pad: 0.6em;
+	$padd: 0.8em;
+	$pad2: 1em;
+	$p3: 0.3em;
+	$p6: 0.6em;
+	$p8: 0.8em;
+	$p10: 1em;
+	$p12: 1.2em;
+
+	//fonts
+	@font-face {
+		font-family: 'caladeabold';
+		src: url('../fonts/caladea-bold-webfont.eot');
+		src: url('../fonts/caladea-bold-webfont.eot?#iefix') format('embedded-opentype'),
+			 url('../fonts/caladea-bold-webfont.woff2') format('woff2'),
+			 url('../fonts/caladea-bold-webfont.woff') format('woff'),
+			 url('../fonts/caladea-bold-webfont.ttf') format('truetype'),
+			 url('../fonts/caladea-bold-webfont.svg#caladeabold') format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}
+	@font-face {
+		font-family: 'carlitoregular';
+		src: url('../fonts/carlito-regular-webfont.eot');
+		src: url('../fonts/carlito-regular-webfont.eot?#iefix') format('embedded-opentype'),
+			 url('../fonts/carlito-regular-webfont.woff2') format('woff2'),
+			 url('../fonts/carlito-regular-webfont.woff') format('woff'),
+			 url('../fonts/carlito-regular-webfont.ttf') format('truetype'),
+			 url('../fonts/carlito-regular-webfont.svg#carlitoregular') format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}
+	$sans-font: Calibri, Carlito, CarlitoRegular, "Trebuchet MS", Tahoma, Arial, Helvetica, sans-serif;
+	$mono-font: Inconsolata, Consolas, Monaco, "Lucida Console", "DejaVu Sans Mono", monospace;
+	$serif-font: Cambria, Caladea, CaladeaBold, Georgia, serif;
+
+/* ############################################
+#	CLEANUP
+############################################ */
+	html * {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		font: inherit;
+		vertical-align: baseline;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+	}
+	body {line-height: 1;}
+	ol, ul {list-style: none;}
+	table {border-collapse: collapse; border-spacing: 0;}
+	a, a:link, a:visited, a:hover, a:active {text-decoration: none;	color: inherit;}
+	b {font-weight: bold;}
+	i {font-style: italic;}
+	[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {display: none !important;}	//hide angular elements until loaded
+
+/* ############################################
+#	LAYOUT
+############################################ */
+	body {font-family: $sans-font;}
+
+	#nav {
+		display: flex;
+		flex-wrap: wrap; 
+		//line-height: 1.3em;
+		margin: $p3 $p6 0;
+		a {
+			margin: $p3 $p3 0 0;
+			padding: $p6 $p8;
+			background-color: grey;
+			text-decoration: none;
+			color: white;
+		}
+		a:hover {
+			background-color: lightgrey;
+			color: black;
+			cursor: pointer;
+		}
+		a.selected {
+			background-color: lightsteelblue;
+			pointer-events: none;
+			cursor: default;
+		}
+	}
+	h1 {
+		margin: $p6 $p6 0;
+		font-size: 1.6em;
+		font-family: $serif-font;
+	}
+
+/* ############################################
+#	MOBILE CONTAINER
+############################################ */
+	div.mobile-box {
+		width: 100%;
+		padding: $p6;
+		overflow-x: auto;
+		&.size0 {font-size: 60%; td {padding: 0 2px; line-height: 1.6;}}
+		&.size1 {font-size: 80%; td {padding: 0 0.35em; line-height: 1.6;}}
+		&.size3 {font-size: 140%;}
+	}
+	div.mobile-wrap {
+		display: flex;
+		flex-flow: row wrap;
+		div.mobile-box {
+			flex: 1 1 280px;
+			// &.size0 {flex-basis: 120px;}
+			// &.size1 {flex-basis: 150px;}
+			// &.size3 {flex-basis: 250px;}
+		}
+	}
+
+/* ############################################
+#	TABLE
+############################################ */
+	table {border-collapse: collapse; font-size: 85%;}
+	td {padding: 0.1em $pad; text-align: right; white-space: nowrap;}
+	th {background-color: grey; color: white;}
+	tr.alt {background-color: whitesmoke;}
+	tr.summary {background-color: lightgray;}
+	th.sort-field {
+		padding: $p6 0; 
+		box-shadow: inset 0 -3px 0 0 black;
+	}
+	th.sort-field.reverse {
+		padding: $p6 0; 
+		box-shadow: inset 0 3px 0 0 black;
+	}
+	span.income {color: limegreen;}
+	span.debt {color: orangered;}
+	td.left {text-align: left;}
+	div.amount-count {float: left; opacity: 0.5;}
+
+/* ############################################
+#	FORM
+############################################ */
+	form {
+		width: 100%;
+		max-width: 280px;
+		.form-group {
+			width: 100%;
+			margin-top: $p6;
+		}
+		input:not([type=checkbox]), select {
+			//-webkit-appearance: none;
+			background-color: white;
+			border: 1px solid black;
+			border-radius: 5px;
+			padding: $p6; 
+			padding-right: 1px; 
+			height: 2.8em; 
+			line-height: normal;
+			min-width: 94%; 
+			width: 100%; 
+			vertical-align: middle;
+		}
+		input[type=checkbox] {
+			display: inline-block;
+			// transform: scale(2);
+			// -ms-transform: scale(2); /* IE */
+			// -webkit-transform: scale(2); /* Safari and Chrome */
+			// -o-transform: scale(2); /* Opera */
+			// -moz-transform: scale(2); /* FF */
+			zoom: 2;
+			vertical-align: middle;
+			border: 1px solid black;
+		}
+		label {
+			display: inline-block;
+			padding: $p6; 
+			padding-right: $p12; // more clicking room
+			// margin-left: $p6;
+		}
+		button {
+			display: inline-block; 
+			appearance: none; 
+			-webkit-appearance: none; 
+			padding: $p6 $p8; 
+			background-color: lightgray; 
+			border: 1px solid gray; 
+			border-radius: 5px; 
+			font-family: inherit; 
+			width: 48%;
+		}
+	}
+
+/* ############################################
+#	GROCERY NAME COLORS
+############################################ */
+	.Nesters {color: olive;}
+	.Save-On, .Creekside {color: limegreen;}
+	.Costco {color: royalblue;}
+	.Urban, .Whistler {color: lightseagreen;}
+	.Meats {color: maroon;}
+	.Keg {color: blueviolet;}
+	.IGA, .Safeway {color: crimson;}
+	.Other {color: dimgrey;}

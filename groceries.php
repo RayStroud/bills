@@ -1,12 +1,20 @@
 <?php
-	function selectBills($db)
+	function selectBills($db, $days)
 	{
-		$result = $db->query('SELECT * FROM groceries ORDER BY date');
+		if ($days > 0) 
+		{
+			$result = $db->query("SELECT * FROM bill WHERE type = 'Grocery' AND date > NOW() - INTERVAL $days DAY ORDER BY date");
+		} 
+		else 
+		{
+			$result = $db->query("SELECT * FROM bill WHERE type = 'Grocery' ORDER BY date");
+		}
+		$groceries = [];
 		while($row = $result->fetch_assoc())
 		{
 			$bill = new stdClass();
 			$bill->date = $row['date'];
-			$bill->location = $row['location'];
+			$bill->name = $row['name'];
 			$bill->amount = (float)$row['amount'];
 			$bill->id = (int)$row['id'];
 
@@ -23,7 +31,8 @@
 				STR_TO_DATE(CONCAT(YEARWEEK(date, 3), ' Monday'), '%x%v %W') as weekStart,
 				COUNT(id) as count,
 				SUM(amount) as amount
-			FROM groceries
+			FROM bill
+			WHERE type = 'Grocery'
 			GROUP BY yearweek
 			ORDER BY yearweek";
 		$result = $db->query($sql);
@@ -49,7 +58,8 @@
 				STR_TO_DATE(CONCAT(YEAR(date), ' ', MONTHNAME(date), ' 1'), '%Y %M %e') as monthStart,
 				COUNT(id) as count,
 				SUM(amount) as amount
-			FROM groceries
+			FROM bill
+			WHERE type = 'Grocery'
 			GROUP BY year, month
 			ORDER BY year, month";
 		$result = $db->query($sql);
@@ -69,21 +79,21 @@
 	function insert($db, $bill)
 	{
 		var_dump($bill);
-		$stmt = $db->prepare('INSERT INTO groceries (date, location, amount) VALUES (?, ?, ?);');
-		$stmt->bind_param('ssd', $bill->date, $bill->location, $bill->amount);
+		$stmt = $db->prepare("INSERT INTO bill (date, type, name, amount) VALUES (?, 'Grocery', ?, ?);");
+		$stmt->bind_param('ssd', $bill->date, $bill->name, $bill->amount);
 		$stmt->execute();
 		echo $stmt->insert_id;
 	}
 	function update($db, $bill)
 	{
-		$stmt = $db->prepare('UPDATE groceries SET date = ?, location = ?, amount = ? WHERE id = ? LIMIT 1;');
-		$stmt->bind_param('ssdi', $bill->date, $bill->location, $bill->amount, $bill->id);
+		$stmt = $db->prepare('UPDATE bill SET date = ?, name = ?, amount = ? WHERE id = ? LIMIT 1;');
+		$stmt->bind_param('ssdi', $bill->date, $bill->name, $bill->amount, $bill->id);
 		$stmt->execute();
 		echo $stmt->affected_rows;
 	}
 	function delete($db, $id)
 	{
-		$stmt = $db->prepare('DELETE FROM groceries WHERE id = ? LIMIT 1;');
+		$stmt = $db->prepare('DELETE FROM bill WHERE id = ? LIMIT 1;');
 		$stmt->bind_param('i', $id);
 		$stmt->execute();
 		echo $stmt->affected_rows;
@@ -109,9 +119,13 @@
 				{
 					selectMonths($db);
 				}
+				else if(isset($_GET['days']))
+				{
+					selectBills($db, $_GET['days']);
+				}
 				else
 				{
-					selectBills($db);
+					selectBills($db, null);
 				}
 				break;
 			case 'POST':

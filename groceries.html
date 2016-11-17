@@ -3,119 +3,120 @@
 <head>
 	<title>Bills</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-	<script src="js/angular.min.js"></script>
-	<script src="js/moment.min.js"></script>
-	<script src="js/app.js"></script>
-	<style type="text/css">
-		body {font-family: monospace;}
-		body * {box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;}
-		table {margin: 1em 1%; border-collapse: collapse;}
-		td {padding: 0.1em 0.5em; text-align: right;}
-		th {background-color: grey; color: white;}
-		tr.alt {background-color: whitesmoke;}
-		tr.summary {background-color: lightgray;}
-		.Nesters {color: olive;}
-		.Save-On, .Creekside {color: limegreen;}
-		.Costco {color: royalblue;}
-		.Urban, .Whistler {color: lightseagreen;}
-		.Meats {color: maroon;}
-		.Keg {color: blueviolet;}
-		.IGA, .Safeway {color: crimson;}
-		.Other {color: dimgrey;}
-		.wrap {display: flex; flex-flow: row wrap;}
-		form {max-width: 200px;}
-		input, select {padding: 0.5em; padding-right: 1px; height: 2.5em; min-width: 94%; width: 100%; margin: 0.8em 0;}
-		button {display: inline-block; appearance: none; -webkit-appearance: none; padding: 0.8em 1em; background-color: lightgray; border: 1px solid gray; border-radius: 5px; font-family: inherit; width: 48%;}
-		th.sort-field {padding: 0.5em 0; box-shadow: inset 0 -3px 0 0 black;}
-		th.sort-field.reverse {padding: 0.5em 0; box-shadow: inset 0 3px 0 0 black;}
-	</style>
+	<script src="assets/js/angular.min.js"></script>
+	<script src="assets/js/moment.min.js"></script>
+	<script src="assets/js/app.js"></script>
+	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body ng-controller="GroceriesController as ctrl">
-	<h1>Grocery Bills</h1>
-	<div class="wrap">
-		<form>
-			<input type="date" ng-model="ctrl.newBill.date" placeholder="YYYY-MM-DD"/>
-			<select ng-model="ctrl.newBill.location">
-				<option value="" disabled selected>Location</option>
-				<option value="IGA">IGA</option>
-				<option value="Creekside">Creekside</option>
-				<option value="Whistler">Whistler</option>
-				<option value="Save-On">Save-On</option>
-				<option value="Nesters">Nesters</option>
-				<option value="Urban">Urban</option>
-				<option value="Costco">Costco</option>
-				<option value="Meats">Meats</option>
-				<option value="Keg">Keg</option>
-				<option value="Safeway">Safeway</option>
-				<option value="Other">Other</option>
-			</select>
-			<input type="number" ng-model="ctrl.newBill.amount" placeholder="$"/>
-			<div>
-				<button ng-click="ctrl.newBill = null;">Clear</button>
-				<button ng-click="ctrl.addBill(newBill);">Add Bill</button>
-			</div>
-		</form>
-		<table>
-			<tr>
-				<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'date')}" ng-click="ctrl.changeSortField(0, 'date')">Date</th>
-				<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'location')}" ng-click="ctrl.changeSortField(0, 'location')">Store</th>
-				<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'amount')}" ng-click="ctrl.changeSortField(0, 'amount')">Amount</th>
-			</tr>
-			<tr>
-				<td>{{ctrl.newBill.date | date:"EEE yy-MMM-dd"}}</td>
-				<td class="{{ctrl.newBill.location}}">{{ctrl.newBill.location}}</td>
-				<td>{{ctrl.newBill.amount | currency}}</td>
-			</tr>
-			<tr ng-repeat="bill in ctrl.bills | orderBy:ctrl.sortField[0]:ctrl.sortReverse[0]" ng-class-even="'alt'">
-				<td>{{bill.date | date:"EEE yy-MMM-dd"}}</td>
-				<td class="{{bill.location}}">{{bill.location}}</td>
-				<td>{{bill.amount | currency}}</td>
-			</tr>
-		</table>
-		<table>
-			<tr>
-				<th ng-class="{reverse:ctrl.sortReverse[1], 'sort-field':ctrl.isSortField(1, 'weekStart')}" ng-click="ctrl.changeSortField(1, 'weekStart')">Week</th>
-				<th ng-class="{reverse:ctrl.sortReverse[1], 'sort-field':ctrl.isSortField(1, 'count')}" ng-click="ctrl.changeSortField(1, 'count')">Bills</th>
-				<th ng-class="{reverse:ctrl.sortReverse[1], 'sort-field':ctrl.isSortField(1, 'amount')}" ng-click="ctrl.changeSortField(1, 'amount')">Total</th>
-			</tr>
-			<tr ng-repeat="week in ctrl.weeks | orderBy:ctrl.sortField[1]:ctrl.sortReverse[1]" ng-class-even="'alt'">
-				<td>{{week.weekStart | date:'yy-MMM-dd'}}</td>
-				<td>{{week.count}}</td>
-				<td>{{week.amount | currency}}</td>
-			</tr>
-			<tr class="summary">
-				<td>{{ctrl.weeksSummary.totalWeeks}} weeks</td>
-				<td>{{ctrl.weeksSummary.totalBills}}</td>
-				<td>{{ctrl.weeksSummary.totalAmount | currency}}</td>
-			</tr>
-			<tr class="summary">
-				<td>average</td>
-				<td>{{ctrl.weeksSummary.averageBills | number:2}}</td>
-				<td>{{ctrl.weeksSummary.averageAmount | currency}}</td>
-			</tr>
-		</table>
-		<table>
-			<tr>
-				<th ng-class="{reverse:ctrl.sortReverse[2], 'sort-field':ctrl.isSortField(2, 'month')}" ng-click="ctrl.changeSortField(2, 'month')">Month</th>
-				<th ng-class="{reverse:ctrl.sortReverse[2], 'sort-field':ctrl.isSortField(2, 'count')}" ng-click="ctrl.changeSortField(2, 'count')">Bills</th>
-				<th ng-class="{reverse:ctrl.sortReverse[2], 'sort-field':ctrl.isSortField(2, 'amount')}" ng-click="ctrl.changeSortField(2, 'amount')">Total</th>
-			</tr>
-			<tr ng-repeat="month in ctrl.months | orderBy:ctrl.sortField[2]:ctrl.sortReverse[2]" ng-class-even="'alt'">
-				<td>{{month.month | date:'yyyy-MMM'}}</td>
-				<td>{{month.count}}</td>
-				<td>{{month.amount | currency}}</td>
-			</tr>
-			<tr class="summary">
-				<td>{{ctrl.monthsSummary.totalMonths}} months</td>
-				<td>{{ctrl.monthsSummary.totalBills}}</td>
-				<td>{{ctrl.monthsSummary.totalAmount | currency}}</td>
-			</tr>
-			<tr class="summary">
-				<td>average</td>
-				<td>{{ctrl.monthsSummary.averageBills | number:2}}</td>
-				<td>{{ctrl.monthsSummary.averageAmount | currency}}</td>
-			</tr>
-		</table>
+	<div id="nav">
+		<a href="groceries.html" class="selected">Groceries</a>
+		<a href="bills.html">Bills</a>
+		<a href="bills-monthly.html">Monthly</a>
+		<a href="bill-add.html">Add</a>
+	</div>
+	<h1>Groceries</h1>
+	<div class="mobile-wrap">
+		<div class="mobile-box">
+			<form ng-init="ctrl.newBill.type = 'Grocery'">
+				<div class="form-group">
+					<input type="date" ng-model="ctrl.newBill.date" placeholder="YYYY-MM-DD"/>
+				</div>
+				<div class="form-group">
+					<select ng-model="ctrl.newBill.name">
+						<option value="" disabled selected>Location</option>
+						<option value="IGA">IGA</option>
+						<option value="Creekside">Creekside</option>
+						<option value="Whistler">Whistler</option>
+						<option value="Save-On">Save-On</option>
+						<option value="Nesters">Nesters</option>
+						<option value="Urban">Urban</option>
+						<option value="Costco">Costco</option>
+						<option value="Meats">Meats</option>
+						<option value="Keg">Keg</option>
+						<option value="Safeway">Safeway</option>
+						<option value="Other">Other</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<input ng-model="ctrl.newBill.name" placeholder="Custom Location" />
+				</div>
+				<div class="form-group">
+					<input type="number" ng-model="ctrl.newBill.amount" placeholder="$ Amount"/>
+				</div>
+				<div class="form-group">
+					<button ng-click="ctrl.newBill = null;">Clear</button>
+					<button ng-click="ctrl.addBill(newBill);">Add Bill</button>
+				</div>
+			</form>
+		</div>
+		<div class="mobile-box">
+			<table>
+				<tr>
+					<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'date')}" ng-click="ctrl.changeSortField(0, 'date')">Date</th>
+					<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'name')}" ng-click="ctrl.changeSortField(0, 'name')">Store</th>
+					<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'amount')}" ng-click="ctrl.changeSortField(0, 'amount')">Amount</th>
+				</tr>
+				<tr>
+					<td>{{ctrl.newBill.date | date:"EEE MMM dd"}}</td>
+					<td class="{{ctrl.newBill.name}}">{{ctrl.newBill.name}}</td>
+					<td>{{ctrl.newBill.amount | currency}}</td>
+				</tr>
+				<tr ng-repeat="bill in ctrl.bills | orderBy:ctrl.sortField[0]:ctrl.sortReverse[0]" ng-class-even="'alt'">
+					<td>{{bill.date | date:"EEE MMM dd"}}</td>
+					<td class="{{bill.name}}">{{bill.name}}</td>
+					<td>{{bill.amount | currency}}</td>
+				</tr>
+			</table>
+		</div>
+		<div class="mobile-box">
+			<table>
+				<tr>
+					<th ng-class="{reverse:ctrl.sortReverse[1], 'sort-field':ctrl.isSortField(1, 'weekStart')}" ng-click="ctrl.changeSortField(1, 'weekStart')">Week</th>
+					<th ng-class="{reverse:ctrl.sortReverse[1], 'sort-field':ctrl.isSortField(1, 'count')}" ng-click="ctrl.changeSortField(1, 'count')">Bills</th>
+					<th ng-class="{reverse:ctrl.sortReverse[1], 'sort-field':ctrl.isSortField(1, 'amount')}" ng-click="ctrl.changeSortField(1, 'amount')">Total</th>
+				</tr>
+				<tr ng-repeat="week in ctrl.weeks | orderBy:ctrl.sortField[1]:ctrl.sortReverse[1]" ng-class-even="'alt'">
+					<td>{{week.weekStart | date:'yy-MMM-dd'}}</td>
+					<td>{{week.count}}</td>
+					<td>{{week.amount | currency}}</td>
+				</tr>
+				<tr class="summary">
+					<td>{{ctrl.weeksSummary.totalWeeks}} weeks</td>
+					<td>{{ctrl.weeksSummary.totalBills}}</td>
+					<td>{{ctrl.weeksSummary.totalAmount | currency}}</td>
+				</tr>
+				<tr class="summary">
+					<td>average</td>
+					<td>{{ctrl.weeksSummary.averageBills | number:2}}</td>
+					<td>{{ctrl.weeksSummary.averageAmount | currency}}</td>
+				</tr>
+			</table>
+		</div>
+		<div class="mobile-box">
+			<table>
+				<tr>
+					<th ng-class="{reverse:ctrl.sortReverse[2], 'sort-field':ctrl.isSortField(2, 'month')}" ng-click="ctrl.changeSortField(2, 'month')">Month</th>
+					<th ng-class="{reverse:ctrl.sortReverse[2], 'sort-field':ctrl.isSortField(2, 'count')}" ng-click="ctrl.changeSortField(2, 'count')">Bills</th>
+					<th ng-class="{reverse:ctrl.sortReverse[2], 'sort-field':ctrl.isSortField(2, 'amount')}" ng-click="ctrl.changeSortField(2, 'amount')">Total</th>
+				</tr>
+				<tr ng-repeat="month in ctrl.months | orderBy:ctrl.sortField[2]:ctrl.sortReverse[2]" ng-class-even="'alt'">
+					<td>{{month.month | date:'MMM yyyy'}}</td>
+					<td>{{month.count}}</td>
+					<td>{{month.amount | currency}}</td>
+				</tr>
+				<tr class="summary">
+					<td>{{ctrl.monthsSummary.totalMonths}} months</td>
+					<td>{{ctrl.monthsSummary.totalBills}}</td>
+					<td>{{ctrl.monthsSummary.totalAmount | currency}}</td>
+				</tr>
+				<tr class="summary">
+					<td>average</td>
+					<td>{{ctrl.monthsSummary.averageBills | number:2}}</td>
+					<td>{{ctrl.monthsSummary.averageAmount | currency}}</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 </body>
 </html>
