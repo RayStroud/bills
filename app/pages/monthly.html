@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html ng-app="bills">
-<head>
-	<title>Bills</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-	<script src="assets/js/angular.min.js"></script>
-	<script src="assets/js/moment.min.js"></script>
-	<script src="assets/js/app.js"></script>
-	<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body ng-controller="BillsMonthlyController as ctrl">
-	<div id="nav">
-		<a href="groceries.html">Groceries</a>
-		<a href="bills.html">Bills</a>
-		<a href="bills-monthly.html" class="selected">Monthly</a>
-		<a href="bill-add.html">Add</a>
-	</div>
+<div ng-controller="BillsMonthlyController as ctrl">
 	<h1>Monthly Bills</h1>
 	<div class="mobile-box">
 		<table>
@@ -53,5 +37,4 @@
 			</tr>
 		</table>
 	</div>
-</body>
-</html>
+</div>

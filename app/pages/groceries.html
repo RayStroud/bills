@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html ng-app="bills">
-<head>
-	<title>Bills</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-	<script src="assets/js/angular.min.js"></script>
-	<script src="assets/js/moment.min.js"></script>
-	<script src="assets/js/app.js"></script>
-	<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body ng-controller="GroceriesController as ctrl">
-	<div id="nav">
-		<a href="groceries.html" class="selected">Groceries</a>
-		<a href="bills.html">Bills</a>
-		<a href="bills-monthly.html">Monthly</a>
-		<a href="bill-add.html">Add</a>
-	</div>
+<div ng-controller="GroceriesController as ctrl">
 	<h1>Groceries</h1>
 	<div class="mobile-wrap">
 		<div class="mobile-box">
@@ -42,7 +26,7 @@
 					<input ng-model="ctrl.newBill.name" placeholder="Custom Location" />
 				</div>
 				<div class="form-group">
-					<input type="number" ng-model="ctrl.newBill.amount" placeholder="$ Amount"/>
+					<input type="number" step="any" ng-model="ctrl.newBill.amount" placeholder="$ Amount"/>
 				</div>
 				<div class="form-group">
 					<button ng-click="ctrl.newBill = null;">Clear</button>
@@ -118,5 +102,4 @@
 			</table>
 		</div>
 	</div>
-</body>
-</html>
+</div>

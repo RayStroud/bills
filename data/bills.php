@@ -1,10 +1,12 @@
 <?php
+	include 'include/db.php';
+
 	function selectBills($db)
 	{
 		$result = $db->query("	
-			SELECT date, type, name, amount, 0 AS isIncome FROM bill
+			SELECT date, type, name, amount, 0 AS isIncome, id FROM bill
 			UNION
-			SELECT date, type, name, amount, 1 AS isIncome FROM income");
+			SELECT date, type, name, amount, 1 AS isIncome, id FROM income");
 		$bills = [];
 		while($row = $result->fetch_assoc())
 		{
@@ -14,7 +16,7 @@
 			$bill->name 		= 			$row['name'];
 			$bill->amount 		= (float)	$row['amount'];
 			$bill->isIncome 	= (int)		$row['isIncome'];
-			$bill->id = (int)$row['id'];
+			$bill->id 			= (int)		$row['id'];
 
 			$bills[] = $bill;
 		}
@@ -129,16 +131,6 @@
 
 	try
 	{	
-		mysqli_report(MYSQLI_REPORT_STRICT);
-		$host = 'localhost';
-		$dbname = 'bills';
-		$user = 'root';
-		$password = 'root';
-		$db = new mysqli($host, $user, $password, $dbname);
-		//* DEBUG */ error_reporting(E_ALL);
-		//* DEBUG */ ini_set('display_errors', 1);
-		//* DEBUG */ echo 'php version: ' . phpversion() . '<br/>mysql version: ' . $db->get_server_info() . '<hr>';
-
 		switch($_SERVER['REQUEST_METHOD'])
 		{
 			case 'GET':

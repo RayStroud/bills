@@ -1,13 +1,14 @@
 <?php
+	include 'include/db.php';
 	function selectBills($db, $days)
 	{
 		if ($days > 0) 
 		{
-			$result = $db->query("SELECT * FROM bill WHERE type = 'Grocery' AND date > NOW() - INTERVAL $days DAY ORDER BY date");
+			$result = $db->query("SELECT date, name, amount, id FROM bill WHERE type = 'Grocery' AND date > NOW() - INTERVAL $days DAY ORDER BY date");
 		} 
 		else 
 		{
-			$result = $db->query("SELECT * FROM bill WHERE type = 'Grocery' ORDER BY date");
+			$result = $db->query("SELECT date, name, amount, id FROM bill WHERE type = 'Grocery' ORDER BY date");
 		}
 		$groceries = [];
 		while($row = $result->fetch_assoc())
@@ -101,13 +102,6 @@
 
 	try
 	{
-		//mysqli_report(MYSQLI_REPORT_STRICT);
-		$host = 'localhost';
-		$dbname = 'bills';
-		$user = 'root';
-		$password = 'root';
-		$db = new mysqli($host, $user, $password, $dbname);
-
 		switch($_SERVER['REQUEST_METHOD'])
 		{
 			case 'GET':

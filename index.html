@@ -1,16 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" ng-app="bills">
 <head>
-	<title>Home - Bills</title>
+	<title>Bills</title>
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 	<div id="nav">
-		<a href="groceries.html">Groceries</a>
-		<a href="bills.html">Bills</a>
-		<a href="bills-monthly.html">Monthly</a>
-		<a href="bill-add.html">Add</a>
+		<a href="#/groceries">Groceries</a>
+		<a href="#/bills">Bills</a>
+		<a href="#/monthly">Monthly</a>
+		<a href="#/bills/add">Add</a>
 	</div>
+	<div ng-view></div>
+	
+	<!-- libraries -->
+	<script src="assets/js/angular.min.js"></script>
+	<script src="assets/js/angular-route.min.js"></script>
+	<script src="assets/js/moment.min.js"></script>
+
+	<!-- application -->
+	<script src="app/app.js"></script>
+	<script src="app/pages/controllers.js"></script>
 </body>
 </html>
