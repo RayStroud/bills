@@ -125,6 +125,7 @@ angular.module('bills')
 	var ctrl = this;
 	ctrl.sortField = 'date';
 	ctrl.sortReverse = true;
+	ctrl.typeSortValue = ['type','date'];
 
 	ctrl.loadBills = function() {
 		$http.get('/bills/data/bills.php')

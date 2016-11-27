@@ -64,7 +64,7 @@
 			<table>
 				<tr>
 					<th ng-class="{reverse:ctrl.sortReverse, 'sort-field':ctrl.isSortField('date')}" ng-click="ctrl.changeSortField('date')">Date</th>
-					<th ng-class="{reverse:ctrl.sortReverse, 'sort-field':ctrl.isSortField('[type,name]')}" ng-click="ctrl.changeSortField('[type,name]')">Type</th>
+					<th ng-class="{reverse:ctrl.sortReverse, 'sort-field':ctrl.isSortField(ctrl.typeSortValue)}" ng-click="ctrl.changeSortField(ctrl.typeSortValue)">Type</th>
 					<th ng-class="{reverse:ctrl.sortReverse, 'sort-field':ctrl.isSortField('amount')}" ng-click="ctrl.changeSortField('amount')">Amount</th>
 				</tr>
 				<tr>
