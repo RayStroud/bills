@@ -1,7 +1,7 @@
 (function() {
 	angular.module('bills', ['ngRoute'])
 
-	//* ONLINE */ .constant('backend', {domain:'http://75.156.76.175:7290/bills/data/'})
+	//* ONLINE */ .constant('backend', {domain:'http://23.17.122.45:7290/bills/data/'})
 	/* LOCAL */ .constant('backend', {domain:'./data/'})
 
 	.config(function ($routeProvider) {
