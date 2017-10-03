@@ -40,6 +40,17 @@ CREATE TABLE bill
 	PRIMARY KEY (id)
 );
 
+DROP TABLE IF EXISTS gas;
+CREATE TABLE gas
+(
+	date			DATE NOT NULL,
+	amount			DECIMAL(7,2),
+	mileage			INT,
+
+	id INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (id)
+);
+
 -- grocery bill should default to a one week range
 
 

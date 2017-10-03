@@ -1,5 +1,5 @@
-<div ng-controller="GroceriesController as ctrl">
-	<h1>Groceries</h1>
+<div ng-controller="GasController as ctrl">
+	<h1>Gas</h1>
 	<div class="mobile-wrap">
 		<div class="mobile-box">
 			<form>
@@ -7,26 +7,10 @@
 					<input type="date" ng-model="ctrl.newBill.date" placeholder="YYYY-MM-DD"/>
 				</div>
 				<div class="form-group">
-					<select ng-model="ctrl.newBill.name">
-						<option value="" disabled>Location</option>
-						<option value="Save-On">Save-On</option>
-						<option value="IGA">IGA</option>
-						<option value="Creekside">Creekside</option>
-						<option value="Whistler">Whistler</option>
-						<option value="Nesters">Nesters</option>
-						<option value="Urban">Urban</option>
-						<option value="Costco">Costco</option>
-						<option value="Meats">Meats</option>
-						<option value="Keg">Keg</option>
-						<option value="Safeway">Safeway</option>
-						<option value="Other">Other</option>
-					</select>
-				</div>
-				<div class="form-group custom-input">
-					<input ng-model="ctrl.newBill.name" placeholder="Custom Location" />
+					<input type="number" step="any" ng-model="ctrl.newBill.amount" placeholder="$ Amount"/>
 				</div>
 				<div class="form-group">
-					<input type="number" step="any" ng-model="ctrl.newBill.amount" placeholder="$ Amount"/>
+					<input type="number" step="any" ng-model="ctrl.newBill.mileage" placeholder="Odometer reading"/>
 				</div>
 				<div class="form-group">
 					<button ng-click="ctrl.newBill = null;">Clear</button>
@@ -38,17 +22,14 @@
 			<table>
 				<tr>
 					<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'date')}" ng-click="ctrl.changeSortField(0, 'date')">Date</th>
-					<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'name')}" ng-click="ctrl.changeSortField(0, 'name')">Store</th>
 					<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'amount')}" ng-click="ctrl.changeSortField(0, 'amount')">Amount</th>
 				</tr>
 				<tr>
 					<td>{{ctrl.newBill.date | date:"EEE MMM dd"}}</td>
-					<td class="{{ctrl.newBill.name}}">{{ctrl.newBill.name}}</td>
 					<td>{{ctrl.newBill.amount | currency}}</td>
 				</tr>
 				<tr ng-repeat="bill in ctrl.bills | orderBy:ctrl.sortField[0]:ctrl.sortReverse[0]" ng-class-even="'alt'">
 					<td>{{bill.date | date:"EEE MMM dd"}}</td>
-					<td class="{{bill.name}}">{{bill.name}}</td>
 					<td>{{bill.amount | currency}}</td>
 				</tr>
 			</table>

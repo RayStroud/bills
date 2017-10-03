@@ -178,6 +178,10 @@
 			padding-right: $p12; // more clicking room
 			// margin-left: $p6;
 		}
+		.custom-input input {
+			background-color: #f5f5f5;
+			border-color: darkgrey;
+		}
 		button {
 			display: inline-block; 
 			appearance: none; 
