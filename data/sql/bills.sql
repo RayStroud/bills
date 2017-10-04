@@ -45,7 +45,7 @@ CREATE TABLE gas
 (
 	date			DATE NOT NULL,
 	price			DECIMAL(7,2),
-	volume			INT,
+	volume			DECIMAL(7,3),
 	odometer		INT,
 
 	id INT NOT NULL AUTO_INCREMENT,

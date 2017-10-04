@@ -90,7 +90,7 @@
 	{
 		var_dump($bill);
 		$stmt = $db->prepare("INSERT INTO gas (date, price, volume, odometer) VALUES (?, ?, ?, ?);");
-		$stmt->bind_param('sdii', $bill->date, $bill->amount, $bill->volume, $bill->odometer);
+		$stmt->bind_param('sddi', $bill->date, $bill->amount, $bill->volume, $bill->odometer);
 		$stmt->execute();
 		echo $stmt->insert_id;
 	}
