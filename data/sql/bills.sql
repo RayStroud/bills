@@ -44,8 +44,9 @@ DROP TABLE IF EXISTS gas;
 CREATE TABLE gas
 (
 	date			DATE NOT NULL,
-	amount			DECIMAL(7,2),
-	mileage			INT,
+	price			DECIMAL(7,2),
+	volume			INT,
+	odometer		INT,
 
 	id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (id)

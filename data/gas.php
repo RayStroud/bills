@@ -78,11 +78,19 @@
 		$result->free();
 		echo json_encode($months);
 	}
-	function insert($db, $bill)
+	function insertBill($db, $bill)
 	{
 		var_dump($bill);
 		$stmt = $db->prepare("INSERT INTO bill (date, type, name, amount) VALUES (?, 'Transport', 'Gas', ?);");
 		$stmt->bind_param('sd', $bill->date, $bill->amount);
+		$stmt->execute();
+		echo $stmt->insert_id;
+	}
+	function insertGas($db, $bill)
+	{
+		var_dump($bill);
+		$stmt = $db->prepare("INSERT INTO gas (date, price, volume, odometer) VALUES (?, ?, ?, ?);");
+		$stmt->bind_param('sdii', $bill->date, $bill->amount, $bill->volume, $bill->odometer);
 		$stmt->execute();
 		echo $stmt->insert_id;
 	}
@@ -99,14 +107,6 @@
 		$stmt->bind_param('i', $id);
 		$stmt->execute();
 		echo $stmt->affected_rows;
-	}
-	function insertMileage($db, $bill)
-	{
-		var_dump($bill);
-		$stmt = $db->prepare("INSERT INTO gas (date, amount, mileage) VALUES (?, ?, ?);");
-		$stmt->bind_param('sdi', $bill->date, $bill->amount, $bill->mileage);
-		$stmt->execute();
-		echo $stmt->insert_id;
 	}
 
 	try
@@ -133,8 +133,8 @@
 				break;
 			case 'POST':
 				$bill = json_decode(file_get_contents("php://input"));
-				insert($db, $bill);
-				insertMileage($db, $bill);
+				insertBill($db, $bill);
+				insertGas($db, $bill);
 				break;
 			case 'PUT':
 				$bill = json_decode(file_get_contents("php://input"));
