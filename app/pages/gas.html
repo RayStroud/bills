@@ -2,7 +2,7 @@
 	<h1>Gas</h1>
 	<div class="mobile-wrap">
 		<div class="mobile-box">
-			<form>
+			<form name="addForm">
 				<div class="form-group">
 					<input type="date" ng-model="ctrl.newBill.date" placeholder="YYYY-MM-DD" required />
 				</div>
@@ -17,7 +17,7 @@
 				</div>
 				<div class="form-group">
 					<button ng-click="ctrl.newBill = null;">Clear</button>
-					<button ng-click="ctrl.addBill(newBill);">Add Bill</button>
+					<button ng-click="ctrl.addBill(newBill);" ng-disabled="addForm.$invalid">Add Gas</button>
 				</div>
 			</form>
 		</div>

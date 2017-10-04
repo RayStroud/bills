@@ -2,9 +2,9 @@
 	<h1>Bills</h1>
 	<div class="mobile-wrap">
 		<div class="mobile-box">
-			<form>
+			<form name="addForm">
 				<div class="form-group">
-					<input type="date" ng-model="addCtrl.newBill.date" placeholder="YYYY-MM-DD"/>
+					<input type="date" ng-model="addCtrl.newBill.date" placeholder="YYYY-MM-DD" required/>
 				</div>
 				<div class="form-group">
 					<select ng-model="addCtrl.newBill.type">
@@ -53,7 +53,7 @@
 				</div>
 				<div class="form-group">
 					<button ng-click="addCtrl.newBill = null;">Clear</button>
-					<button ng-click="addCtrl.addBill(newBill);">Add Bill</button>
+					<button ng-click="addCtrl.addBill(newBill);" ng-disabled="addForm.$invalid">Add Bill</button>
 				</div>
 			</form>
 		</div>
