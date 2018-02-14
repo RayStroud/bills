@@ -16,6 +16,9 @@
 					<input type="number" step="any" ng-model="ctrl.newBill.odometer" placeholder="Odometer reading (km)"/>
 				</div>
 				<div class="form-group">
+					<input type="text" ng-model="ctrl.newBill.notes" placeholder="Notes"/>
+				</div>
+				<div class="form-group">
 					<button ng-click="ctrl.newBill = null;">Clear</button>
 					<button ng-click="ctrl.addBill(newBill);" ng-disabled="addForm.$invalid">Add Gas</button>
 				</div>
@@ -26,38 +29,26 @@
 				<tr>
 					<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'date')}" ng-click="ctrl.changeSortField(0, 'date')">Date</th>
 					<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'amount')}" ng-click="ctrl.changeSortField(0, 'amount')">Amount</th>
+					<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'volume')}" ng-click="ctrl.changeSortField(0, 'volume')">Volume</th>
+					<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'price')}" ng-click="ctrl.changeSortField(0, 'price')">Price</th>
+					<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'odometer')}" ng-click="ctrl.changeSortField(0, 'odometer')">Odometer</th>
+					<th ng-class="{reverse:ctrl.sortReverse[0], 'sort-field':ctrl.isSortField(0, 'notes')}" ng-click="ctrl.changeSortField(0, 'notes')">Notes</th>
 				</tr>
 				<tr>
 					<td>{{ctrl.newBill.date | date:"EEE MMM dd"}}</td>
 					<td>{{ctrl.newBill.amount | currency}}</td>
+					<td>{{ctrl.newBill.volume}}</td>
+					<td>{{ctrl.newBill.price | currency}}</td>
+					<td>{{ctrl.newBill.odometer}}</td>
+					<td>{{ctrl.newBill.notes}}</td>
 				</tr>
 				<tr ng-repeat="bill in ctrl.bills | orderBy:ctrl.sortField[0]:ctrl.sortReverse[0]" ng-class-even="'alt'">
 					<td>{{bill.date | date:"EEE MMM dd"}}</td>
 					<td>{{bill.amount | currency}}</td>
-				</tr>
-			</table>
-		</div>
-		<div class="mobile-box">
-			<table>
-				<tr>
-					<th ng-class="{reverse:ctrl.sortReverse[1], 'sort-field':ctrl.isSortField(1, 'weekStart')}" ng-click="ctrl.changeSortField(1, 'weekStart')">Week</th>
-					<th ng-class="{reverse:ctrl.sortReverse[1], 'sort-field':ctrl.isSortField(1, 'count')}" ng-click="ctrl.changeSortField(1, 'count')">Bills</th>
-					<th ng-class="{reverse:ctrl.sortReverse[1], 'sort-field':ctrl.isSortField(1, 'amount')}" ng-click="ctrl.changeSortField(1, 'amount')">Total</th>
-				</tr>
-				<tr ng-repeat="week in ctrl.weeks | orderBy:ctrl.sortField[1]:ctrl.sortReverse[1]" ng-class-even="'alt'">
-					<td>{{week.weekStart | date:'yy-MMM-dd'}}</td>
-					<td>{{week.count}}</td>
-					<td>{{week.amount | currency}}</td>
-				</tr>
-				<tr class="summary">
-					<td>{{ctrl.weeksSummary.totalWeeks}} weeks</td>
-					<td>{{ctrl.weeksSummary.totalBills}}</td>
-					<td>{{ctrl.weeksSummary.totalAmount | currency}}</td>
-				</tr>
-				<tr class="summary">
-					<td>average</td>
-					<td>{{ctrl.weeksSummary.averageBills | number:2}}</td>
-					<td>{{ctrl.weeksSummary.averageAmount | currency}}</td>
+					<td>{{bill.volume}}</td>
+					<td>{{bill.price | currency}}</td>
+					<td>{{bill.odometer}}</td>
+					<td>{{bill.notes}}</td>
 				</tr>
 			</table>
 		</div>

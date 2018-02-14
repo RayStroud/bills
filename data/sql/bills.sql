@@ -5,6 +5,7 @@ CREATE TABLE bill
 	type			VARCHAR(100),
 	name			VARCHAR(100),
 	amount			DECIMAL(7,2),
+	timestamp		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
 	id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (id)
@@ -17,9 +18,27 @@ CREATE TABLE income
 	type			VARCHAR(100),
 	name			VARCHAR(100),
 	amount			DECIMAL(7,2),
+	timestamp		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
 	id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS gas;
+CREATE TABLE gas
+(
+	date			DATE NOT NULL,
+	amount			DECIMAL(7,2),
+	volume			DECIMAL(7,3),
+	price			DECIMAL(5,3),
+	odometer		INT,
+	notes			VARCHAR(100),
+	timestamp		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+	bill_id	INT,
+	id INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (id),
+	FOREIGN KEY (bill_id) REFERENCES bill(id)
 );
 
 DROP TABLE IF EXISTS bill;
@@ -40,17 +59,6 @@ CREATE TABLE bill
 	PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS gas;
-CREATE TABLE gas
-(
-	date			DATE NOT NULL,
-	price			DECIMAL(7,2),
-	volume			DECIMAL(7,3),
-	odometer		INT,
-
-	id INT NOT NULL AUTO_INCREMENT,
-	PRIMARY KEY (id)
-);
 
 -- grocery bill should default to a one week range
 

@@ -102,7 +102,7 @@ angular.module('bills')
 
 .controller('GasController', ['$http', function($http) {
 	var ctrl = this;
-	ctrl.sortField = ['date', 'weekStart', 'month'];
+	ctrl.sortField = ['id', 'weekStart', 'month'];
 	ctrl.sortReverse = [true, true, true];
 	ctrl.newBill = {type:'Transport', name: 'Gas'};
 	ctrl.newBill.date = new Date();
@@ -303,7 +303,7 @@ angular.module('bills')
 		}
 	};
 	ctrl.isSortField = function(field) {
-		console.log("---" + ctrl.sortField + "|" + field + "|" +  JSON.stringify(ctrl.sortField) + "|" + JSON.stringify(field));
+		//* DEBUG */ console.log("---" + ctrl.sortField + "|" + field + "|" +  JSON.stringify(ctrl.sortField) + "|" + JSON.stringify(field));
 		return JSON.stringify(ctrl.sortField) == JSON.stringify(field);
 	};
 

@@ -122,17 +122,11 @@
 ############################################ */
 	table {border-collapse: collapse; font-size: 85%;}
 	td {padding: 0.1em $pad; text-align: right; white-space: nowrap;}
-	th {background-color: grey; color: white;}
+	th {padding: $p6 0; background-color: grey; color: white;}
 	tr.alt {background-color: whitesmoke;}
 	tr.summary {background-color: lightgray;}
-	th.sort-field {
-		padding: $p6 0; 
-		box-shadow: inset 0 -3px 0 0 black;
-	}
-	th.sort-field.reverse {
-		padding: $p6 0; 
-		box-shadow: inset 0 3px 0 0 black;
-	}
+	th.sort-field {box-shadow: inset 0 -3px 0 0 black;}
+	th.sort-field.reverse {box-shadow: inset 0 3px 0 0 black;}
 	span.income {color: limegreen;}
 	span.debt {color: orangered;}
 	td.left {text-align: left;}
